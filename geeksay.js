@@ -104,6 +104,7 @@ const translations = {
     "mathematics": "math",
     "heart": "<3",
     "love": "<3",
+    "smile": ":)",
     "list": "ls",
     "ok": "200",
     "okay": "200",
@@ -119,7 +120,6 @@ const translations = {
     "death": "BSOD",
     "wait": "load",
     "waiting": "loading",
-    "forbidden": "403",
     "unauthorized": "401",
     "nothing": "void",
 }
@@ -177,22 +177,24 @@ function isNumeric(num) {
 
 function geeksay(text) {
     const input = Array.isArray(text) ? text : String(text).split(' ');
-
     return input.map(geeksayWord).join(' ');
 }
 
-function geeksayWord(text) {
-    if (isNumeric(text)) {
-        return (text >>> 0).toString(2);
+function geeksayWord(word) {
+    if (isNumeric(word)) {
+        return (word >>> 0).toString(2);
     }
     else {
-        lowerCaseText = text.toLowerCase();
+        lowerCaseText = removeSymbols(word).toLowerCase();
         if (translations.hasOwnProperty(lowerCaseText)) {
-            return translations[lowerCaseText];
-        } else {
-            return text;
+            word = word.toLowerCase().replace(lowerCaseText, translations[lowerCaseText]);
         }
+        return word;
     }
+}
+
+function removeSymbols(word) {
+    return word.replace(/(?!\n|\r\n)[^a-zA-Z0-9]+/, '');
 }
 
 function getRandomTranslation() {
